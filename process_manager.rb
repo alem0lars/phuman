@@ -31,7 +31,7 @@ class ProcessManager
 
   # Set the process affinity
   def set_affinity
-    unless @pid.nil?
+    unless pid.nil?
       `taskset -p #{desired_affinity} #{pid}`
       return $?.success?
     else
@@ -41,10 +41,14 @@ class ProcessManager
 
   # Get the current affinity for the managed process
   def get_affinity
-    unless @pid.nil?
+    unless pid.nil?
       out = `taskset -p #{pid}`.delete("\n")
-      md = out.match(/^pid\s#{pid}'s current affinity mask: (.+)$/)
-      return (md.length > 1) ? md[1] : nil
+      if $?.success?
+        md = out.match(/^pid\s#{pid}'s current affinity mask: (.+)$/)
+        return (md.length > 1) ? md[1] : nil
+      else
+        return nil
+      end
     else
       return nil
     end
