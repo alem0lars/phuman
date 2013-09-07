@@ -1,3 +1,7 @@
+#!/usr/bin/env ruby
+
+
+
 # { Configuration
 
 $config = {
@@ -51,6 +55,7 @@ def main
   end while(pman.get_affinity == $config[:desired_affinity]) &&
            ($config[:max_retries] == nil || retries_idx < $config[:max_retries])
 end
+
 
 # Start the program
 main
